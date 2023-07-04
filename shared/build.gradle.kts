@@ -3,6 +3,13 @@ plugins {
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
+    id("com.apollographql.apollo3").version("3.8.2")
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.jd")
+    }
 }
 
 kotlin {
@@ -35,15 +42,31 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                implementation("io.github.qdsfdhvh:image-loader:1.5.2")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
+                api("io.insert-koin:koin-core:3.4.0")
             }
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.6.1")
+                api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.9.0")
+                api("androidx.core:core-ktx:1.10.1")
+                api("io.insert-koin:koin-android:3.4.0")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
             }
         }
+
+        val androidDebug by creating {
+            dependsOn(commonMain)
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(compose.preview)
+            }
+        }
+
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
@@ -56,6 +79,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.1")
             }
         }
     }
@@ -63,7 +87,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+    namespace = "com.jd.pkdx.common"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
