@@ -26,6 +26,7 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.dp
 import com.jd.pkdx.CrossFadeTransitionSpec
 import com.jd.pkdx.FadeOutTransitionSpec
+import com.jd.pkdx.ListScreen
 import com.jd.pkdx.domain.Pokemon
 import com.jd.pkdx.presentation.shared.SharedElement
 import com.jd.pkdx.presentation.shared.SharedMaterialContainer
@@ -42,7 +43,7 @@ internal fun PokemonCard(
 ) {
     var parentOffset by remember { mutableStateOf(Offset.Unspecified) }
     var mySize by remember { mutableStateOf(0) }
-    val pokemonImagePainter = rememberAsyncImagePainter(artworkUrl(pokemon.id))
+    val pokemonImagePainter = rememberAsyncImagePainter(url = artworkUrl(pokemon.id))
 
     PokemonTypesTheme(types = pokemon.typeOfPokemon) {
         Box(modifier = modifier) {
@@ -57,23 +58,34 @@ internal fun PokemonCard(
                         onClick(pokemon, pokemonImagePainter)
                     }.fillMaxHeight(),
             ) {
-                PokemonNumber(pokemon.id, modifier = Modifier.align(Alignment.TopEnd))
-                Column(
-                    modifier = Modifier.padding(top = 25.dp, start = 20.dp)
+                SharedMaterialContainer(
+                    key = "$pokemon $updateIds",
+                    screenKey = ListScreen,
+                    shape = RoundedCornerShape(35.dp),
+                    color = PokemonTypesTheme.colorScheme().surface,
+                    elevation = 0.dp,
+                    transitionSpec = FadeOutTransitionSpec
                 ) {
-                    SharedElement(
-                        key = "${pokemon.name}${updateIds}",
-                        screenKey = "ListScreen",
-                        transitionSpec = CrossFadeTransitionSpec
-                    ) {
-                        PokemonName(pokemonName = pokemon.name)
-                    }
-                    SharedElement(
-                        key = "${pokemon.id}${pokemon.typeOfPokemon.first()}${updateIds}",
-                        screenKey = "ListScreen",
-                        transitionSpec = CrossFadeTransitionSpec
-                    ) {
-                        PokemonBadges(pokemonTypes = pokemon.typeOfPokemon)
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        PokemonNumber(pokemon.id, modifier = Modifier.align(Alignment.TopEnd))
+                        Column(
+                            modifier = Modifier.padding(top = 25.dp, start = 20.dp)
+                        ) {
+                            SharedElement(
+                                key = "${pokemon.name}${updateIds}",
+                                screenKey = ListScreen,
+                                transitionSpec = CrossFadeTransitionSpec
+                            ) {
+                                PokemonName(pokemonName = pokemon.name)
+                            }
+                            SharedElement(
+                                key = "${pokemon.id}${pokemon.typeOfPokemon.first()}${updateIds}",
+                                screenKey = ListScreen,
+                                transitionSpec = CrossFadeTransitionSpec
+                            ) {
+                                PokemonBadges(pokemonTypes = pokemon.typeOfPokemon)
+                            }
+                        }
                     }
                 }
             }
@@ -87,7 +99,7 @@ internal fun PokemonCard(
                 }, content = {
                 SharedMaterialContainer(
                     key = "${pokemon.id}${updateIds}",
-                    screenKey = "ListScreen",
+                    screenKey = ListScreen,
                     shape = CircleShape,
                     color = Color.Transparent,
                     transitionSpec = FadeOutTransitionSpec
@@ -103,5 +115,5 @@ internal fun PokemonCard(
     }
 }
 
-private fun artworkUrl(pokemonId: Int): String =
+fun artworkUrl(pokemonId: Int): String =
     "https://assets.pokemon.com/assets/cms2/img/pokedex/full/${pokemonId.toString().padStart(3, '0')}.png"

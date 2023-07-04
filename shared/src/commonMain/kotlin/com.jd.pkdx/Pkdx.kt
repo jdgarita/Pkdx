@@ -2,7 +2,6 @@ package com.jd.pkdx
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -15,15 +14,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.jd.pkdx.data.PokemonListState
-import com.jd.pkdx.presentation.theme.AppTheme
+import com.jd.pkdx.presentation.animations.ProgressThresholds
+import com.jd.pkdx.presentation.navigation.Screens
 import com.jd.pkdx.presentation.screens.PokemonDetailsScreen
 import com.jd.pkdx.presentation.screens.PokemonListScreen
-import com.jd.pkdx.presentation.navigation.Screens
 import com.jd.pkdx.presentation.shared.FadeMode
 import com.jd.pkdx.presentation.shared.MaterialContainerTransformSpec
-import com.jd.pkdx.presentation.animations.ProgressThresholds
 import com.jd.pkdx.presentation.shared.SharedElementsRoot
 import com.jd.pkdx.presentation.shared.SharedElementsTransitionSpec
+import com.jd.pkdx.presentation.theme.AppTheme
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -32,11 +31,8 @@ import kotlinx.coroutines.launch
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun Pkdx(state: PokemonListState) {
-
-    val stablePokemonList = remember(state) { state.pokemonList }
-    val listState = rememberLazyListState()
     var width by remember { mutableStateOf(0) }
-    val updateIds = remember { mutableStateOf("") }
+    var updateIds by remember { mutableStateOf("") }
 
     AppTheme {
         val currentScreen = remember { mutableStateOf<Screens>(Screens.PokemonList) }
@@ -53,10 +49,9 @@ fun Pkdx(state: PokemonListState) {
                         )
                     } else {
                         PokemonListScreen(
-                            listState = listState,
                             width = width,
-                            updateIds = updateIds.value,
-                            pokemonList = stablePokemonList,
+                            updateIds = updateIds,
+                            pokemonList = state.pokemonList,
                             onClick = { pokemon, pokemonImagePainter ->
                                 prepareTransition(
                                     pokemon.id,
@@ -64,7 +59,7 @@ fun Pkdx(state: PokemonListState) {
                                     pokemon.typeOfPokemon,
                                     pokemonImagePainter
                                 )
-                                updateIds.value = "abc"
+                                updateIds = "abc"
 
                                 currentScreen.value = Screens.PokemonDetails(
                                     pokemon = pokemon,
@@ -80,7 +75,7 @@ fun Pkdx(state: PokemonListState) {
                                 pokemon = screen.pokemon,
                                 pokemonImagePainter = screen.imagePainter,
                                 goBack = {
-                                    updateIds.value = ""
+                                    updateIds = ""
                                     GlobalScope.launch {
                                         delay(100)
                                         sharedTransition.prepareTransition()
@@ -98,12 +93,21 @@ fun Pkdx(state: PokemonListState) {
     }
 }
 
-private const val TransitionDurationMillis = 1000
+const val ListScreen = "list"
+const val DetailsScreen = "details"
+
+private const val TransitionDurationMillis = 700
 
 val FadeOutTransitionSpec = MaterialContainerTransformSpec(
     durationMillis = TransitionDurationMillis,
     fadeMode = FadeMode.Out
 )
+
+val FadeInTransitionSpec = MaterialContainerTransformSpec(
+    durationMillis = TransitionDurationMillis,
+    fadeMode = FadeMode.In
+)
+
 val CrossFadeTransitionSpec = SharedElementsTransitionSpec(
     durationMillis = TransitionDurationMillis,
     fadeMode = FadeMode.Cross,
