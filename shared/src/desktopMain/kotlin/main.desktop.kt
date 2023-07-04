@@ -1,12 +1,12 @@
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.jd.pkdx.Pkdx
+import com.jd.pkdx.di.KoinHelper
 
-actual fun getPlatformName(): String = "Desktop"
-
-@Composable fun MainView() = App()
-
-@Preview
 @Composable
-fun AppPreview() {
-    App()
+fun MainView() {
+    val viewModel = KoinHelper.pkdxViewModel
+    val state by viewModel.state.collectAsState()
+    Pkdx(state = state)
 }
