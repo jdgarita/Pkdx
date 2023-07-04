@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModel<PokemonListViewModel>()
+    private val viewModel by viewModel<AndroidPkdxViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
