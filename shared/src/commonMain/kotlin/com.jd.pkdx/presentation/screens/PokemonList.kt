@@ -20,12 +20,13 @@ import com.jd.pkdx.domain.Pokemon
 import com.jd.pkdx.presentation.elements.PokemonCard
 import com.jd.pkdx.presentation.elements.PokemonCardContainer
 import com.jd.pkdx.presentation.elements.ScrollDirection
+import io.kamel.core.Resource
 
 @Composable
 fun PokemonListScreen(
     pokemonList: List<Pokemon>,
     width: Int,
-    onClick: (pokemon: Pokemon, pokemonImagePainter: Painter) -> Unit,
+    onClick: (pokemon: Pokemon, pokemonImagePainter: Resource<Painter>) -> Unit,
     updateIds: String,
 ) {
 

@@ -31,7 +31,8 @@ import com.jd.pkdx.domain.Pokemon
 import com.jd.pkdx.presentation.shared.SharedElement
 import com.jd.pkdx.presentation.shared.SharedMaterialContainer
 import com.jd.pkdx.presentation.theme.PokemonTypesTheme
-import com.seiko.imageloader.rememberAsyncImagePainter
+import io.kamel.core.Resource
+import io.kamel.image.asyncPainterResource
 
 @Composable
 internal fun PokemonCard(
@@ -39,11 +40,12 @@ internal fun PokemonCard(
     width: Int,
     pokemon: Pokemon,
     updateIds: String,
-    onClick: (pokemon: Pokemon, pokemonImagePainter: Painter) -> Unit,
+    onClick: (pokemon: Pokemon, pokemonImagePainter: Resource<Painter>) -> Unit,
 ) {
     var parentOffset by remember { mutableStateOf(Offset.Unspecified) }
     var mySize by remember { mutableStateOf(0) }
-    val pokemonImagePainter = rememberAsyncImagePainter(url = artworkUrl(pokemon.id))
+
+    val pokemonImagePainter = asyncPainterResource(data = artworkUrl(pokemon.id))
 
     PokemonTypesTheme(types = pokemon.typeOfPokemon) {
         Box(modifier = modifier) {
@@ -59,7 +61,7 @@ internal fun PokemonCard(
                     }.fillMaxHeight(),
             ) {
                 SharedMaterialContainer(
-                    key = "$pokemon $updateIds",
+                    key = "$pokemon$updateIds",
                     screenKey = ListScreen,
                     shape = RoundedCornerShape(35.dp),
                     color = PokemonTypesTheme.colorScheme().surface,
@@ -72,14 +74,14 @@ internal fun PokemonCard(
                             modifier = Modifier.padding(top = 25.dp, start = 20.dp)
                         ) {
                             SharedElement(
-                                key = "${pokemon.name}${updateIds}",
+                                key = "${pokemon.name}$updateIds",
                                 screenKey = ListScreen,
                                 transitionSpec = CrossFadeTransitionSpec
                             ) {
                                 PokemonName(pokemonName = pokemon.name)
                             }
                             SharedElement(
-                                key = "${pokemon.id}${pokemon.typeOfPokemon.first()}${updateIds}",
+                                key = "${pokemon.id}${pokemon.typeOfPokemon.first()}$updateIds",
                                 screenKey = ListScreen,
                                 transitionSpec = CrossFadeTransitionSpec
                             ) {
@@ -98,7 +100,7 @@ internal fun PokemonCard(
                     mySize = coordinates.size.width
                 }, content = {
                 SharedMaterialContainer(
-                    key = "${pokemon.id}${updateIds}",
+                    key = "${pokemon.id}$updateIds",
                     screenKey = ListScreen,
                     shape = CircleShape,
                     color = Color.Transparent,

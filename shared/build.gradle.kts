@@ -47,6 +47,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
                 implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
                 api("io.insert-koin:koin-core:3.4.0")
+                implementation("media.kamel:kamel-image:0.6.1")
             }
         }
         val androidMain by getting {

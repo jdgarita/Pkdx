@@ -35,12 +35,12 @@ import com.jd.pkdx.presentation.elements.PokemonName
 import com.jd.pkdx.presentation.shared.SharedElement
 import com.jd.pkdx.presentation.shared.SharedMaterialContainer
 import com.jd.pkdx.presentation.theme.PokemonTypesTheme
-import com.seiko.imageloader.rememberAsyncImagePainter
+import io.kamel.core.Resource
 
 @Composable
 fun PokemonDetailsScreen(
     pokemon: Pokemon,
-    pokemonImagePainter: Painter,
+    pokemonImagePainter: Resource<Painter>,
     goBack: () -> Unit,
 ) {
 
@@ -56,7 +56,7 @@ fun PokemonDetailsScreen(
             Box {
 
                 SharedMaterialContainer(
-                    key = "$pokemon ",
+                    key = "$pokemon",
                     screenKey = DetailsScreen,
                     color = PokemonTypesTheme.colorScheme().surface,
                     shape = RoundedCornerShape(bottomEnd = 35.dp, bottomStart = 35.dp),
@@ -77,7 +77,7 @@ fun PokemonDetailsScreen(
                             modifier = Modifier.padding(16.dp).aspectRatio(1f).align(Alignment.Center)
                         ) {
                             SharedMaterialContainer(
-                                key = pokemon.image.toString(),
+                                key = "${pokemon.id}",
                                 screenKey = DetailsScreen,
                                 color = Color.Transparent,
                                 transitionSpec = FadeOutTransitionSpec
