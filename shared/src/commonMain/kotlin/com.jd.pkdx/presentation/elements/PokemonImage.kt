@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import com.jd.pkdx.presentation.elements.PokeBall
 
 @Composable
 fun PokemonImage(modifier: Modifier = Modifier, pokemonImagePainter: Painter, pokemonName: String) {
