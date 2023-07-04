@@ -43,8 +43,8 @@ kotlin {
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
-                implementation("io.github.qdsfdhvh:image-loader:1.5.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("io.github.qdsfdhvh:image-loader:1.5.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
                 implementation("com.apollographql.apollo3:apollo-runtime:3.8.2")
                 api("io.insert-koin:koin-core:3.4.0")
             }
@@ -55,7 +55,7 @@ kotlin {
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
                 api("io.insert-koin:koin-android:3.4.0")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.2")
             }
         }
 
@@ -79,7 +79,7 @@ kotlin {
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.7.2")
             }
         }
     }
