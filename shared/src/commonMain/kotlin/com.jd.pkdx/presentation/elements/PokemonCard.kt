@@ -2,8 +2,10 @@ package com.jd.pkdx.presentation.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -69,9 +71,18 @@ internal fun PokemonCard(
                     transitionSpec = FadeOutTransitionSpec
                 ) {
                     Box(modifier = Modifier.fillMaxWidth()) {
-                        PokemonNumber(pokemon.id, modifier = Modifier.align(Alignment.TopEnd))
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                            SharedElement(
+                                key = "${pokemon.id}${pokemon.name}$updateIds",
+                                screenKey = ListScreen,
+                                transitionSpec = CrossFadeTransitionSpec
+                            ) {
+                                PokemonNumber(pokemon.id)
+                            }
+                        }
                         Column(
-                            modifier = Modifier.padding(top = 25.dp, start = 20.dp)
+                            modifier = Modifier.padding(top = 25.dp, start = 20.dp),
+                            verticalArrangement = Arrangement.spacedBy(30.dp, Alignment.CenterVertically)
                         ) {
                             SharedElement(
                                 key = "${pokemon.name}$updateIds",
@@ -85,7 +96,7 @@ internal fun PokemonCard(
                                 screenKey = ListScreen,
                                 transitionSpec = CrossFadeTransitionSpec
                             ) {
-                                PokemonBadges(pokemonTypes = pokemon.typeOfPokemon)
+                                PokemonBadges(pokemonTypes = pokemon.typeOfPokemon, style = PokemonBadgesStyle.VERTICAL)
                             }
                         }
                     }
