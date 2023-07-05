@@ -13,8 +13,8 @@ import kotlinx.coroutines.delay
 @Composable
 fun AnimateInEffect(
     intervalStart: Float = 0f,
-    content: @Composable () -> Unit,
     pokemon: Pokemon,
+    content: @Composable () -> Unit,
 ) {
     val visibility = remember { Animatable(0f) }
     val offset = remember { Animatable(30f) }

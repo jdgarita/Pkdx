@@ -1,14 +1,9 @@
 package com.jd.pkdx.presentation.elements
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -28,26 +23,33 @@ enum class PokemonBadgesStyle {
 
 @Composable
 fun PokemonBadges(
-    modifier: Modifier = Modifier,
     pokemonTypes: List<String>,
     colored: Boolean = false,
     style: PokemonBadgesStyle,
 ) {
-    val numberOfColumns = if (style == PokemonBadgesStyle.VERTICAL) 1 else 2
-    val width = if (style == PokemonBadgesStyle.VERTICAL) 100.dp else 200.dp
     PokemonTypesTheme(types = pokemonTypes) {
-        LazyVerticalGrid(
-            modifier = modifier.width(width),
-            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-            horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
-            columns = GridCells.Fixed(numberOfColumns)
-        ) {
-            items(items = pokemonTypes) { pokemonType ->
+        GridPokemonBadges(style = style) {
+            pokemonTypes.forEach { pokemonType ->
                 PokemonBadge(pokemonType = pokemonType, colored = colored)
-                Spacer(modifier = Modifier.size(10.dp))
             }
         }
     }
+}
+
+@Composable
+private fun GridPokemonBadges(
+    style: PokemonBadgesStyle,
+    content: @Composable () -> Unit,
+) = when (style) {
+    PokemonBadgesStyle.VERTICAL -> Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        content = { content.invoke() }
+    )
+
+    PokemonBadgesStyle.HORIZONTAL -> Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        content = { content.invoke() }
+    )
 }
 
 @Composable
